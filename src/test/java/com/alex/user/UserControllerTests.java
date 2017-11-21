@@ -16,6 +16,9 @@ public class UserControllerTests {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private UserService userService;
+
     @InjectMocks
     UserController userController;
 
@@ -41,5 +44,19 @@ public class UserControllerTests {
         User foundUser = userController.getUser(99999);
 
         assertEquals(null, foundUser);
+    }
+
+    @Test
+    public void whenSuccessfullyCreatingAUser() throws Exception{
+        User someUserFromTheService = new User();
+
+        someUserFromTheService.setFirstName("SOME FIRST NAME");
+
+        when(userService.saveOrFindUser(any(User.class))).thenReturn(someUserFromTheService);
+
+        User resultingUser = userController.createOrFindUser(new User());
+
+        assertEquals(someUserFromTheService, resultingUser);
+
     }
 }

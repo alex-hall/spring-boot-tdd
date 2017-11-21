@@ -10,11 +10,18 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserService userService;
+
     @RequestMapping(value="/user/{id}", method= RequestMethod.GET)
     @ResponseBody
     public User getUser(@PathVariable Integer id){
         return userRepository.findOne(id);
     }
 
+    @RequestMapping(value="/user", method= RequestMethod.POST)
+    @ResponseBody
+    public User createOrFindUser(@RequestBody User user){
+        return userService.saveOrFindUser(user);
     }
 }
