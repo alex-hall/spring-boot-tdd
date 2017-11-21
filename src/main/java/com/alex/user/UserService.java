@@ -12,7 +12,17 @@ public class UserService {
     UserRepository userRepository;
 
     public User saveOrFindUser(User user) {
-        return new User();
+        User foundOrSavedUser;
+
+        List<User> userByPhoneNumber = userRepository.findByPhoneNumber(user.getPhoneNumber());
+
+        if(userByPhoneNumber.size() == 0){
+            foundOrSavedUser = userRepository.save(user);
+        } else {
+            foundOrSavedUser = userByPhoneNumber.get(0);
+        }
+
+        return foundOrSavedUser;
     }
 
 }
