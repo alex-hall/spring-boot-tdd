@@ -1,5 +1,8 @@
 package com.alex.integration;
 
+import com.alex.user.User;
+import com.alex.user.UserRepository;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +26,24 @@ public class UserControllerIntegrationTests {
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    private User createdUser = new User();
+
+    @Before
+    public void testSetup() {
+        createdUser.setFirstName("Some");
+        createdUser.setLastName("Person");
+        createdUser.setPhoneNumber("2052222222");
+
+        userRepository.save(createdUser);
+    }
 
     @Test
     public void shouldReturnDataIfFound() throws Exception {
         mockMvc
-                .perform(get("/user/1" ))
+                .perform(get("/user/" + createdUser.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().json("{'firstName':'Some', 'lastName': 'Person', 'phoneNumber': '2052222222'}"));
     }
