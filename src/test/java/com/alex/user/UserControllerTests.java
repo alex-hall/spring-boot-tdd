@@ -6,6 +6,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Optional;
+
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
@@ -23,31 +25,31 @@ public class UserControllerTests {
     UserController userController;
 
     @Test
-    public void whenTryingToFindAUserAndItIsFound() throws Exception{
+    public void whenTryingToFindAUserAndItIsFound() throws Exception {
         User someFoundUser = new User();
 
         someFoundUser.setFirstName("BANANAVILLE");
 
-        when(userRepository.findOne(any(Integer.class))).thenReturn(someFoundUser);
+        when(userRepository.findById(any(Integer.class))).thenReturn(Optional.of(someFoundUser));
 
-        User foundUser = userController.getUser(99999);
+        User foundUser = userController.getUser(99999).get();
 
         assertEquals(someFoundUser, foundUser);
         assertEquals(someFoundUser.getFirstName(), foundUser.getFirstName());
     }
 
     @Test
-    public void whenTryingToFindAUserAndItIsNotFound() throws Exception{
+    public void whenTryingToFindAUserAndItIsNotFound() throws Exception {
 
-        when(userRepository.findOne(any(Integer.class))).thenReturn(null);
+        when(userRepository.findById(any(Integer.class))).thenReturn(null);
 
-        User foundUser = userController.getUser(99999);
+        Optional<User> foundUser = userController.getUser(99999);
 
         assertEquals(null, foundUser);
     }
 
     @Test
-    public void whenSuccessfullyCreatingAUser() throws Exception{
+    public void whenSuccessfullyCreatingAUser() throws Exception {
         User someUserFromTheService = new User();
 
         someUserFromTheService.setFirstName("SOME FIRST NAME");
