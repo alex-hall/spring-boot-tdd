@@ -7,7 +7,7 @@
     brew services start mysql
   ```
 
-  Since i'm too lazy to set up Flyaway, connect to mysql:
+  Since i'm too lazy to set up Flyway, connect to mysql:
 
   ```shell
     mysql -uroot
