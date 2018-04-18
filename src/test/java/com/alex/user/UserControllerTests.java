@@ -25,12 +25,12 @@ public class UserControllerTests {
     UserController userController;
 
     @Test
-    public void whenTryingToFindAUserAndItIsFound() throws Exception {
+    public void whenFakeTryingToFindAUserAndItIsFound() throws Exception {
         User someFoundUser = new User();
 
         someFoundUser.setFirstName("BANANAVILLE");
 
-        when(userRepository.findById(any(Integer.class))).thenReturn(Optional.of(someFoundUser));
+        when(userRepository.findById(99999)).thenReturn(Optional.of(someFoundUser));
 
         User foundUser = userController.getUser(99999).get();
 
